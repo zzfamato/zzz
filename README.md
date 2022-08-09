@@ -8,6 +8,7 @@ The training dataset has over 20,000 articles with fields for the article title,
 Some fields have missing values. The average article length is around 700.
 * test.csv contains 5200 unlabeled articles.
 * labels.csv contains ground true labels for test.
+* toy_train_csv: a toy training data set
 
 ## Data preprocessing
 An article is long document consists of title, author, and text where text may contain multiple lines of sentences. To determine
@@ -17,6 +18,26 @@ the boundary of a article, rules belows are defined to detect article boundary:
 
 Since the training dataset is balanced, and feature fields are text, the whole feature fields are concatenated to form a longer text.
 The max article length is limited to 512 where the exceeding part is truncated and the missing part is filled with padding.
+
+## System description
+### files and folders
+* /data: dataset
+* /test: unit tests
+* /out: outputted models
+* /main.py: fine-tune and test a model 
+* /dataset.py: helper file
+* /utils.py: utils for loading data and dataset analysis
+
+### to run
+Start fine-tuning:
+```
+python3 main.py --train_path ./data/train.csv
+```
+Note: to know the parameters, see main.py.
+Test a existing model:
+```
+python3 main.py --test --model_file ./out/bertfn
+```
 
 Deliverables:
 We would like you to build a pipeline for predicting the reliability of the articles in the dataset using any machine learning method of your choice. Please submit a folder containing your .py file(s). 

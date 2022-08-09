@@ -40,6 +40,7 @@ def main():
     parser.add_argument("--device", type=str, default="cpu")
     parser.add_argument("--test", action='store_true')
     args = parser.parse_args()
+    # load a existing model and test
     if args.test:
         test(args)
         return
@@ -49,7 +50,6 @@ def main():
 
     # load dataset
     X, Y = DataReader.read_training(args.data_path)
-    # split out a validation set for development
     X_train, X_vali, Y_train, Y_vali = train_test_split(X, Y, test_size=0.2, random_state=args.seed)
     train_loader = DataLoader(TextDataset(X_train, Y_train, tokenizer), batch_size=args.batch_size,
                               drop_last=False, num_workers=0)
