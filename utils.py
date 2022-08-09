@@ -24,7 +24,6 @@ class DataReader:
         """
         articles, labels = DataReader._transform_training(train_src)
         articles, labels = pd.DataFrame(articles, dtype=str), pd.DataFrame(labels, dtype=int)
-        articles.info()
         return articles, labels
 
     @staticmethod
@@ -96,15 +95,27 @@ class DataReader:
         """
         labels = pd.read_csv(label_src, header=0, encoding='utf-8', dtype=int)
         articles = pd.read_csv(test_src, header=0, encoding='utf-8', dtype=str)
-        articles.info()
         return articles, labels
 
 
 def analyze(df_articles, df_labels):
+    """
+    simple dataset analysis, check the label distribution and average article length
+    :param df_articles:
+    :param df_labels:
+    :return:
+    """
     df = pd.concat([df_articles, df_labels], axis=1)
     df.columns = ['article', 'label']
-    print("label distribution: \n", df.groupby("label").count())
+    print("label distribution: \n", df.groupby("label").count().reset_index())
     length = df['article'].apply(lambda text: len(text.replace('/n', ' ').split(' ')))
     print(f"average article length: {int(length.mean())}")
 
 
+def main():
+    X, Y = DataReader.read_training('./data/train.csv')
+    analyze(X, Y)
+
+
+if __name__ == '__main__':
+    main()
