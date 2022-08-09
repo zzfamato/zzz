@@ -1,6 +1,6 @@
 import unittest
 from utils import DataReader
-from data import TextDataset
+from dataset import TextDataset
 from transformers import BertTokenizer
 
 

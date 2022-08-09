@@ -13,7 +13,7 @@ Some fields have missing values. The average article length is around 700.
 An article is long document consists of title, author, and text where text may contain multiple lines of sentences. To determine
 the boundary of a article, rules belows are defined to detect article boundary:
 * the last line of an article contains a label at the end;
-* the next line is an article with a "strictly increasing by 1" #id or the end of file.
+* the next line is an new article with a "strictly increasing by 1" #id or the end of file.
 
 Since the training dataset is balanced, and feature fields are text, the whole feature fields are concatenated to form a longer text.
 The max article length is limited to 512 where the exceeding part is truncated and the missing part is filled with padding.
