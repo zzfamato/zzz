@@ -50,7 +50,7 @@ def main():
 
     # load dataset
     X, Y = DataReader.read_training(args.data_path)
-    X_train, X_vali, Y_train, Y_vali = train_test_split(X, Y, test_size=0.2, random_state=args.seed)
+    X_train, X_vali, Y_train, Y_vali = train_test_split(X, Y, test_size=0.3, random_state=args.seed)
     train_loader = DataLoader(TextDataset(X_train, Y_train, tokenizer), batch_size=args.batch_size,
                               drop_last=False, num_workers=0)
 
