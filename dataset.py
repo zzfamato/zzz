@@ -1,4 +1,5 @@
 import torch
+from utils import trim_text
 from torch.utils.data import Dataset
 
 
@@ -15,6 +16,7 @@ class TextDataset(Dataset):
         """
         super(TextDataset, self).__init__()
         self.labels = df_labels
+        df_articles = trim_text(df_articles)
         self.articles = [tokenizer.encode_plus(row.values[0], return_tensors='pt',
                                                truncation=True, padding='max_length')
                          for _, row in df_articles.iterrows()]

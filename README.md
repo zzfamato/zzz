@@ -5,11 +5,11 @@ Detect Fake news with BERT.
 
 The training dataset has over 20,000 articles with fields for the article title, author, and text. The label field is the outcome variable where a 1 indicates the article is unreliable and a 0 indicates the article is reliable.
 * train.csv contains 20800 articles. The ratio between positive and negative is balanced.
-Some fields have missing values. The average article length is around 700.
+Some fields have missing values. The average article length is around 700.\
 | class | count |
 | :---: | :---: |
-| 0 | 10340 |
-| 1 | 10000 |
+| 0 | 10340? |
+| 1 | 10000? |
 * test.csv contains 5200 unlabeled articles.
 * labels.csv contains ground true labels for test.
 * toy_train_csv: a toy training data set
@@ -21,7 +21,9 @@ the boundary of a article, rules belows are defined to detect article boundary:
 * the next line is an new article with a "strictly increasing by 1" #id or the end of file.
 
 Since the training dataset is balanced, and feature fields are text, the whole feature fields are concatenated to form a longer text.
-The max article length is limited to 512 where the exceeding part is truncated and the missing part is filled with padding.
+The max article length is limited to 128 where the exceeding part is truncated and the missing part is filled with padding.
+
+Note: to accelerate BERT tokenizer, the text is pre-trimmed.
 
 ## System description
 ### files and folders
@@ -54,8 +56,11 @@ Since the training dataset is balanced, and type I error and type II error are e
 Belows are F1 scores of validation data and test data respectively.
 | model | hyper-param | F1 score |
 | :---: | :---: | :---: |
-| 1 | batch_size=32,lr=1e-5 | 66.6 |
+| 1 | batch_size=32,lr=1e-5,epoch=1 | 0.998 |
 | 2 | batch_size=32,lr=1e-5 | 66.6 |
+| Naive bayes | - | 0.802 |
+| SVM | c=0.5,\gamma= | 0.95 |
+0.802
 ## QA
 
 ### why BERT
@@ -63,4 +68,13 @@ BERT bases on Transformer which takes good care of long input sequence whereas R
 ### parameter tuning
 BERT fine-tuning requires huge computation overhead, a validation dataset is split from the training dataset for hyper-parameter tuning.
 ### possible improvement
+Other than the parameter tuning, learning tricks such as scheduler etc., we may consider:
+* making use of the meta info such as author: if possible, learn author embeddings. The hypothesis is some authors are fake news maker.
+
+* The text length is limited due to limited computation resources. For a long text classification task, one may use a sliding window on a long doc (with overlaps).
+The sliding window divides the doc into a few parts. Each part, treated as a single doc, is fed into a model. The decision is made by aggregating all sub-docs.
+
+
+
+
 

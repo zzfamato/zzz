@@ -98,6 +98,19 @@ class DataReader:
         return articles, labels
 
 
+def trim_text(df_articles, max_length=200):
+    """
+    pre-trim the text to the max_length roughly
+    :param df_articles: article dataframe
+    :param max_length: max length
+    :return: trimmed dataframe
+    """
+    for _, row in df_articles.iterrows():
+        trimmed = row.values[0].split(' ')[:max_length]
+        row.values[0] = ' '.join(trimmed)
+    return df_articles
+
+
 def analyze(df_articles, df_labels):
     """
     simple dataset analysis, check the label distribution and average article length
